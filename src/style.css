@@ -1,0 +1,361 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== Tokens de diseño ===== */
+:root {
+  --bg: #0d0d12;
+  --surface: #17171f;
+  --surface-2: #20202b;
+  --borde: #2c2c3a;
+  --texto: #f1f1f5;
+  --muted: #9b9bb0;
+  --rojo: #ff3b3b;
+  --rojo-osc: #c92626;
+  --amarillo: #ffd23f;
+  --verde: #3ddc84;
+  --azul: #4da3ff;
+  --radio: 10px;
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--texto);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(255, 59, 59, 0.12), transparent 60%),
+    radial-gradient(900px 400px at -10% 10%, rgba(255, 210, 63, 0.06), transparent 60%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.05;
+  margin: 0 0 0.5rem;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+.contenedor {
+  width: min(1180px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.acento {
+  color: var(--rojo);
+}
+
+/* ===== Encabezado de página ===== */
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.cabecera p {
+  margin: 0;
+}
+
+.etiqueta-seccion {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amarillo);
+  margin-bottom: 0.35rem;
+}
+
+/* ===== Botones ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--surface-2);
+  color: var(--texto);
+  font: 600 0.92rem var(--sans);
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: #44445a;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primario {
+  background: linear-gradient(180deg, var(--rojo), var(--rojo-osc));
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(255, 59, 59, 0.25);
+}
+
+.btn-primario:hover:not(:disabled) {
+  border-color: transparent;
+  filter: brightness(1.08);
+}
+
+.btn-peligro {
+  color: #ff8a8a;
+  border-color: rgba(255, 59, 59, 0.35);
+  background: rgba(255, 59, 59, 0.08);
+}
+
+.btn-fantasma {
+  background: transparent;
+}
+
+.btn-chico {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.btn-bloque {
+  width: 100%;
+}
+
+/* ===== Tarjetas / paneles ===== */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.5rem;
+}
+
+.grilla {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* ===== Formularios ===== */
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-fila {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.campo {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.campo label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.campo input,
+.campo select,
+.campo textarea,
+.control {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: var(--bg);
+  color: var(--texto);
+  font: 0.95rem var(--sans);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus,
+.control:focus {
+  outline: none;
+  border-color: var(--rojo);
+  box-shadow: 0 0 0 3px rgba(255, 59, 59, 0.18);
+}
+
+.campo .error-campo {
+  color: #ff8a8a;
+  font-size: 0.8rem;
+}
+
+.campo .ayuda {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.campo.invalido input,
+.campo.invalido select,
+.campo.invalido textarea {
+  border-color: rgba(255, 59, 59, 0.7);
+}
+
+.alerta {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid;
+}
+
+.alerta-error {
+  color: #ffb1b1;
+  background: rgba(255, 59, 59, 0.08);
+  border-color: rgba(255, 59, 59, 0.35);
+}
+
+.alerta-ok {
+  color: #a6f3c8;
+  background: rgba(61, 220, 132, 0.08);
+  border-color: rgba(61, 220, 132, 0.35);
+}
+
+.alerta-info {
+  color: #b9dbff;
+  background: rgba(77, 163, 255, 0.08);
+  border-color: rgba(77, 163, 255, 0.35);
+}
+
+/* ===== Tablas ===== */
+.tabla-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--surface);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--borde);
+  vertical-align: middle;
+}
+
+.tabla th {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+.tabla tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla .acciones {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
+
+/* ===== Barra de filtros ===== */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtros .control {
+  width: auto;
+  min-width: 200px;
+}
+
+/* ===== Transiciones ===== */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 1.1rem;
+  }
+  .filtros .control {
+    flex: 1;
+    min-width: 0;
+  }
+}

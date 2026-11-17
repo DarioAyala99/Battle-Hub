@@ -1,0 +1,31 @@
+# CD de la Edge Function de IA: se despliega cuando cambia su código.
+# Es opcional: si no configurás los secrets, el job se saltea sin fallar.
+name: Deploy Edge Functions
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-functions:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - name: Checkout del código
+        if: env.SUPABASE_ACCESS_TOKEN != ''
+        uses: actions/checkout@v4
+
+      - name: Instalar Supabase CLI
+        if: env.SUPABASE_ACCESS_TOKEN != ''
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Desplegar ai-anuncio
+        if: env.SUPABASE_ACCESS_TOKEN != ''
+        run: supabase functions deploy ai-anuncio --project-ref "$SUPABASE_PROJECT_REF"
