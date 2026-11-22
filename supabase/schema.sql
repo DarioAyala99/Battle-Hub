@@ -111,6 +111,7 @@ create table if not exists public.torneos (
   descripcion text,
   fecha       timestamptz not null,
   lugar       text,
+  zona        text not null,               -- provincia / zona
   cupo        int  not null check (cupo between 2 and 256),
   formato     text not null default 'eliminacion_doble'
               check (formato in ('eliminacion_doble', 'eliminacion_simple', 'round_robin')),
@@ -123,6 +124,27 @@ create table if not exists public.torneos (
 
 create index if not exists torneos_juego_idx on public.torneos (juego_id);
 create index if not exists torneos_fecha_idx on public.torneos (fecha);
+
+-- Zona del torneo, también actualiza bases creadas antes de que existiera la columna
+alter table public.torneos add column if not exists zona text;
+
+-- Torneos que ya existían: se les asigna una zona provisoria
+update public.torneos
+set zona = case when lugar ilike '%online%' then 'online' else 'caba' end
+where zona is null;
+
+alter table public.torneos alter column zona set not null;
+
+-- Debe coincidir con la lista de src/utils/zonas.js
+alter table public.torneos drop constraint if exists torneos_zona_check;
+alter table public.torneos add constraint torneos_zona_check check (zona in (
+    'caba', 'buenos_aires', 'catamarca', 'chaco', 'chubut', 'cordoba', 'corrientes',
+    'entre_rios', 'formosa', 'jujuy', 'la_pampa', 'la_rioja', 'mendoza', 'misiones', 'neuquen',
+    'rio_negro', 'rosario', 'salta', 'san_juan', 'san_luis', 'santa_cruz', 'santa_fe',
+    'santiago_del_estero', 'tierra_del_fuego', 'tucuman', 'online'
+));
+
+create index if not exists torneos_zona_idx on public.torneos (zona);
 
 alter table public.torneos enable row level security;
 
@@ -265,16 +287,16 @@ insert into public.juegos (nombre, desarrolladora, plataformas, personajes) valu
          'Kenshi','Nitara','Rain','Reptile','Shang Tsung','Tanya','General Shao','Reiko'])
 on conflict (nombre) do nothing;
 
-insert into public.torneos (juego_id, nombre, descripcion, fecha, lugar, cupo, formato, estado)
-select j.id, t.nombre, t.descripcion, now() + t.dias, t.lugar, t.cupo, t.formato, t.estado
+insert into public.torneos (juego_id, nombre, descripcion, fecha, lugar, zona, cupo, formato, estado)
+select j.id, t.nombre, t.descripcion, now() + t.dias, t.lugar, t.zona, t.cupo, t.formato, t.estado
 from (values
   ('Street Fighter 6', 'Street Battles #17', 'Torneo mensual abierto a todos los niveles.',
-   interval '7 days',  'Arcade Palermo, CABA', 32, 'eliminacion_doble', 'abierto'),
+   interval '7 days',  'Arcade Palermo, CABA', 'caba', 32, 'eliminacion_doble', 'abierto'),
   ('Tekken 8', 'Iron Fist Yatay', 'Torneo de la comunidad Tekken de zona oeste.',
-   interval '14 days', 'Centro Cultural Yatay', 16, 'eliminacion_doble', 'abierto'),
+   interval '14 days', 'Centro Cultural Yatay', 'caba', 16, 'eliminacion_doble', 'abierto'),
   ('Guilty Gear -Strive-', 'Heaven or Hell #05', 'Formato liga: todos contra todos.',
-   interval '-10 days', 'Online (PC)', 8, 'round_robin', 'finalizado')
-) as t(juego, nombre, descripcion, dias, lugar, cupo, formato, estado)
+   interval '-10 days', 'Online (PC)', 'online', 8, 'round_robin', 'finalizado')
+) as t(juego, nombre, descripcion, dias, lugar, zona, cupo, formato, estado)
 join public.juegos j on j.nombre = t.juego
 where not exists (select 1 from public.torneos x where x.nombre = t.nombre);
 
