@@ -14,10 +14,11 @@ const normalizar = (t) => ({
 })
 
 const torneosService = {
-  async listar({ juegoId, estado } = {}) {
+  async listar({ juegoId, estado, zona } = {}) {
     const params = { select: SELECT, order: 'fecha.asc' }
     if (juegoId) params.juego_id = `eq.${juegoId}`
     if (estado) params.estado = `eq.${estado}`
+    if (zona) params.zona = `eq.${zona}`
     const { data } = await api.get(RUTA, { params })
     return data.map(normalizar)
   },

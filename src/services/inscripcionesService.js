@@ -18,7 +18,7 @@ const inscripcionesService = {
   async listarDeJugador(jugadorId) {
     const { data } = await api.get(RUTA, {
       params: {
-        select: 'id,main,posicion,creado_en,torneo:torneos(id,nombre,fecha,estado,lugar,juego:juegos(nombre,logo_url))',
+        select: 'id,main,posicion,creado_en,torneo:torneos(id,nombre,fecha,estado,lugar,zona,juego:juegos(nombre,logo_url))',
         jugador_id: `eq.${jugadorId}`,
         order: 'creado_en.desc'
       }

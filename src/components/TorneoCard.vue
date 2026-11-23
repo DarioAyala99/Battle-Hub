@@ -4,6 +4,7 @@ import EstadoBadge from '@/components/EstadoBadge.vue'
 import BarraCupo from '@/components/BarraCupo.vue'
 import { FORMATOS } from '@/utils/torneos'
 import { formatearFecha } from '@/utils/formato'
+import { nombreZona } from '@/utils/zonas'
 
 // Componente presentacional: solo recibe datos y los muestra
 defineProps({ torneo: { type: Object, required: true } })
@@ -20,7 +21,7 @@ defineProps({ torneo: { type: Object, required: true } })
       <h3>{{ torneo.nombre }}</h3>
       <ul class="datos">
         <li>📅 {{ formatearFecha(torneo.fecha) }}</li>
-        <li v-if="torneo.lugar">📍 {{ torneo.lugar }}</li>
+        <li>📍 {{ nombreZona(torneo.zona) }}<template v-if="torneo.lugar"> · {{ torneo.lugar }}</template></li>
         <li>🏆 {{ FORMATOS[torneo.formato] }}</li>
       </ul>
       <BarraCupo :torneo="torneo" />

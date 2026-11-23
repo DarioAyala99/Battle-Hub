@@ -209,8 +209,8 @@ p {
 .campo {
   display: grid;
   gap: 0.35rem;
-  align-content: start; /* los campos de una fila quedan alineados aunque uno muestre un error */
-  min-width: 0; /* permite que inputs anchos (como la fecha) se achiquen en vez de pisar al de al lado */
+  align-content: start; 
+  min-width: 0; 
 }
 
 .campo label {

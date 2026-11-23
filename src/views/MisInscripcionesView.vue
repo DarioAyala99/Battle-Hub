@@ -6,6 +6,7 @@ import EstadoCarga from '@/components/EstadoCarga.vue'
 import EstadoBadge from '@/components/EstadoBadge.vue'
 import ImagenSegura from '@/components/ImagenSegura.vue'
 import { formatearFecha, ordinal } from '@/utils/formato'
+import { nombreZona } from '@/utils/zonas'
 
 const auth = useAuthStore()
 const ui = useUiStore()
@@ -50,7 +51,7 @@ const confirmarCancelacion = async (inscripcion) => {
                 {{ i.torneo.nombre }}
               </RouterLink>
               <span class="muted">
-                {{ i.torneo.juego?.nombre }} · {{ formatearFecha(i.torneo.fecha) }} · Main: {{ i.main }}
+                {{ i.torneo.juego?.nombre }} · {{ nombreZona(i.torneo.zona) }} · {{ formatearFecha(i.torneo.fecha) }} · Main: {{ i.main }}
               </span>
             </div>
             <EstadoBadge :estado="i.torneo.estado" />

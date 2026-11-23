@@ -9,6 +9,7 @@ import BarraCupo from '@/components/BarraCupo.vue'
 import EstadoCarga from '@/components/EstadoCarga.vue'
 import { FORMATOS, armarPodio } from '@/utils/torneos'
 import { formatearFecha, ordinal } from '@/utils/formato'
+import { nombreZona } from '@/utils/zonas'
 
 const props = defineProps({ id: { type: String, required: true } })
 
@@ -78,6 +79,7 @@ const medalla = (pos) => ['🥇', '🥈', '🥉'][pos - 1] ?? ''
             <h2>Información</h2>
             <dl class="datos">
               <div><dt>Fecha</dt><dd>{{ formatearFecha(torneo.fecha, { dateStyle: 'full', timeStyle: 'short' }) }}</dd></div>
+              <div><dt>Provincia / zona</dt><dd>{{ nombreZona(torneo.zona) }}</dd></div>
               <div><dt>Lugar</dt><dd>{{ torneo.lugar || 'A confirmar' }}</dd></div>
               <div><dt>Formato</dt><dd>{{ FORMATOS[torneo.formato] }}</dd></div>
               <div><dt>Cupo</dt><dd>{{ torneo.cupo }} jugadores</dd></div>

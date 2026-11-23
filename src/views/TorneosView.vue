@@ -6,15 +6,17 @@ import useJuegosStore from '@/stores/juegosStore'
 import TorneoCard from '@/components/TorneoCard.vue'
 import EstadoCarga from '@/components/EstadoCarga.vue'
 import { ESTADOS } from '@/utils/torneos'
+import { ZONAS } from '@/utils/zonas'
 
 const route = useRoute()
 const router = useRouter()
 const juegosStore = useJuegosStore()
 
-// Los filtros viven en la URL (?juego=...&estado=...): se pueden compartir y sobreviven al F5
+// Los filtros viven en la URL (?juego=...&estado=...&zona=...): se pueden compartir y sobreviven al F5
 const filtros = computed(() => ({
   juegoId: route.query.juego || undefined,
-  estado: route.query.estado || undefined
+  estado: route.query.estado || undefined,
+  zona: route.query.zona || undefined
 }))
 
 const actualizarFiltro = (clave, valor) =>
@@ -31,7 +33,7 @@ onMounted(() => juegosStore.cargar())
       <div>
         <span class="etiqueta-seccion">Calendario</span>
         <h1>Torneos</h1>
-        <p class="muted">Filtrá por juego o estado y entrá al detalle para inscribirte.</p>
+        <p class="muted">Filtrá por juego, zona o estado y entrá al detalle para inscribirte.</p>
       </div>
     </div>
 
@@ -44,6 +46,15 @@ onMounted(() => juegosStore.cargar())
       >
         <option value="">Todos los juegos</option>
         <option v-for="j in juegosStore.items" :key="j.id" :value="j.id">{{ j.nombre }}</option>
+      </select>
+      <select
+        class="control"
+        aria-label="Filtrar por zona"
+        :value="route.query.zona ?? ''"
+        @change="actualizarFiltro('zona', $event.target.value)"
+      >
+        <option value="">Todas las zonas</option>
+        <option v-for="z in ZONAS" :key="z.value" :value="z.value">{{ z.label }}</option>
       </select>
       <select
         class="control"
