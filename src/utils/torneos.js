@@ -1,4 +1,5 @@
-// Reglas de negocio de torneos. Funciones puras (sin Vue ni red): fáciles de testear.
+import { esZonaValida } from './zonas.js'
+
 // La base de datos vuelve a validar todo (trigger + RLS); esto es para dar feedback inmediato.
 
 export const ESTADOS = {
@@ -31,7 +32,6 @@ export const porcentajeOcupacion = (torneo) => {
  */
 export const puedeInscribirse = ({ torneo, isAuthenticated, yaInscripto }) => {
   if (!torneo) return { ok: false, motivo: 'Torneo no encontrado' }
-  // Primero lo que vale para todos (estado y cupo), después lo que depende del usuario
   if (torneo.estado !== 'abierto') return { ok: false, motivo: 'Las inscripciones están cerradas' }
   if (cuposDisponibles(torneo) === 0) return { ok: false, motivo: 'No quedan cupos' }
   if (!isAuthenticated) return { ok: false, motivo: 'Iniciá sesión para inscribirte' }
@@ -58,6 +58,7 @@ export const validarTorneo = (datos, { inscriptosActuales = 0 } = {}) => {
     errores.cupo = `Ya hay ${inscriptosActuales} inscriptos: el cupo no puede ser menor`
   }
 
+  if (!esZonaValida(datos.zona)) errores.zona = 'Elegí la provincia o zona'
   if (!FORMATOS[datos.formato]) errores.formato = 'Formato inválido'
   if (!ESTADOS[datos.estado]) errores.estado = 'Estado inválido'
   if (datos.banner_url && !esUrlValida(datos.banner_url)) errores.banner_url = 'URL inválida'

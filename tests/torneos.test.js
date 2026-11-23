@@ -14,6 +14,7 @@ const torneoValido = {
   juego_id: 'abc',
   nombre: 'Noche de Puños',
   fecha: '2026-12-01T21:00:00.000Z',
+  zona: 'caba',
   cupo: 16,
   formato: 'eliminacion_doble',
   estado: 'abierto',
@@ -92,6 +93,24 @@ describe('validarTorneo', () => {
   it('valida formato, estado y URL del banner', () => {
     const errores = validarTorneo({ ...torneoValido, formato: 'x', estado: 'y', banner_url: 'no-es-url' })
     expect(Object.keys(errores).sort()).toEqual(['banner_url', 'estado', 'formato'])
+  })
+})
+
+describe('zona del torneo', () => {
+  it('es obligatoria', () => {
+    expect(validarTorneo({ ...torneoValido, zona: '' }).zona).toBeDefined()
+    expect(validarTorneo({ ...torneoValido, zona: undefined }).zona).toBeDefined()
+  })
+
+  it('rechaza zonas que no están en la lista', () => {
+    expect(validarTorneo({ ...torneoValido, zona: 'Buenos Aires' }).zona).toBeDefined()
+    expect(validarTorneo({ ...torneoValido, zona: 'mordor' }).zona).toBeDefined()
+  })
+
+  it('acepta las divisiones de Buenos Aires y Santa Fe, y Online', () => {
+    for (const zona of ['caba', 'buenos_aires', 'santa_fe', 'rosario', 'online']) {
+      expect(validarTorneo({ ...torneoValido, zona })).toEqual({})
+    }
   })
 })
 

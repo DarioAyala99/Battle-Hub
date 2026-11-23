@@ -3,6 +3,7 @@ import { reactive, ref, computed } from 'vue'
 import ImagenSegura from '@/components/ImagenSegura.vue'
 import { ESTADOS, FORMATOS, CUPO_MIN, CUPO_MAX, validarTorneo } from '@/utils/torneos'
 import { isoALocal, localAIso } from '@/utils/formato'
+import { ZONAS } from '@/utils/zonas'
 
 const props = defineProps({
   inicial: { type: Object, default: null },
@@ -17,6 +18,7 @@ const form = reactive({
   descripcion: props.inicial?.descripcion ?? '',
   fecha: isoALocal(props.inicial?.fecha),
   lugar: props.inicial?.lugar ?? '',
+  zona: props.inicial?.zona ?? '',
   cupo: props.inicial?.cupo ?? 16,
   formato: props.inicial?.formato ?? 'eliminacion_doble',
   estado: props.inicial?.estado ?? 'abierto',
@@ -33,6 +35,7 @@ const enviar = () => {
     descripcion: form.descripcion.trim() || null,
     fecha: localAIso(form.fecha),
     lugar: form.lugar.trim() || null,
+    zona: form.zona,
     cupo: Number(form.cupo),
     formato: form.formato,
     estado: form.estado,
@@ -73,9 +76,17 @@ const enviar = () => {
         <input id="t-fecha" v-model="form.fecha" type="datetime-local" />
         <span v-if="errores.fecha" class="error-campo">{{ errores.fecha }}</span>
       </div>
+      <div :class="['campo', { invalido: errores.zona }]">
+        <label for="t-zona">Provincia / zona *</label>
+        <select id="t-zona" v-model="form.zona">
+          <option value="" disabled>Elegí dónde se juega</option>
+          <option v-for="z in ZONAS" :key="z.value" :value="z.value">{{ z.label }}</option>
+        </select>
+        <span v-if="errores.zona" class="error-campo">{{ errores.zona }}</span>
+      </div>
       <div class="campo">
         <label for="t-lugar">Lugar</label>
-        <input id="t-lugar" v-model="form.lugar" placeholder="Arcade Palermo / Online" />
+        <input id="t-lugar" v-model="form.lugar" placeholder="Arcade Palermo / Discord" />
       </div>
     </div>
 
