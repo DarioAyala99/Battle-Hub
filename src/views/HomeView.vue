@@ -5,6 +5,7 @@ import useJuegosStore from '@/stores/juegosStore'
 import TorneoCard from '@/components/TorneoCard.vue'
 import ImagenSegura from '@/components/ImagenSegura.vue'
 import EstadoCarga from '@/components/EstadoCarga.vue'
+import VideoFondo from '@/components/VideoFondo.vue'
 
 const juegosStore = useJuegosStore()
 const { torneos, loading, error, cargar } = useTorneos({ estado: 'abierto' })
@@ -15,6 +16,12 @@ onMounted(() => juegosStore.cargar())
 </script>
 
 <template>
+  <VideoFondo
+    src="video/hero-sf6.mp4"
+    poster="video/hero-sf6.jpg"
+    credito="Video: Street Fighter 6 Official Teaser Trailer © CAPCOM"
+  />
+
   <section class="hero">
     <span class="etiqueta-seccion">Hub de juegos de pelea de Argentina</span>
     <h1>No te pierdas más <span class="acento">torneos</span>.<br />Ahora todos están a un botón de distancia</h1>
@@ -60,8 +67,13 @@ onMounted(() => juegosStore.cargar())
 
 <style scoped>
 .hero {
-  padding: 3rem 0 2.5rem;
+  min-height: 52vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 0;
   max-width: 760px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .bajada {

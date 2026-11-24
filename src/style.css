@@ -45,6 +45,14 @@ body {
   min-height: 100vh;
 }
 
+body.con-video {
+  background: transparent;
+}
+
+body.con-video #app {
+  padding-bottom: 3.5rem;
+}
+
 #app {
   min-height: 100vh;
   display: flex;
